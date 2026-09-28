@@ -1,0 +1,22 @@
+node_modules
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+# ── Original, full-size media ──────────────────────────────
+# These stay on your laptop but are never uploaded.
+# The site only uses the small web versions next to them.
+public/images/talmeez.PNG
+public/images/lab/*.png
+public/images/lab/*.PNG
+public/images/lab/Blue Gradient*.mp4
+public/images/projects/This villa*.mp4
+public/videos/luckybiz-ad-1.mp4
+public/videos/luckybiz-ad-2.mov
+public/videos/luckybiz-ad-2-web.mp4
+public/videos/luckybiz-ad-2.jpg
+public/videos/17,990.mp4
+public/videos/final zerlish.mov
+*.mov

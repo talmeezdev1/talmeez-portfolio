@@ -1,0 +1,193 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Design tokens ─────────────────────────
+   Midnight base. Blue/violet only as light: glow, borders, focus, hover. */
+@theme {
+  /* Deep midnight navy rather than black, so the page feels lit, not empty. */
+  --color-ink-950: #0b1022;
+  --color-ink-900: #10162c;
+  --color-ink-800: #151c37;
+  --color-ink-700: #1b2344;
+  --color-ink-600: #232d54;
+  --color-line: rgb(255 255 255 / 0.1);
+  --color-line-strong: rgb(255 255 255 / 0.2);
+
+  --color-fg: #f7f8ff;
+  --color-fg-2: #b6bdd2;
+  --color-fg-3: #8189a3;
+
+  /* Light "paper" sections, so the page alternates between night and day. */
+  --color-paper: #f3f4fb;
+  --color-paper-2: #e7e9f5;
+  --color-night: #0d1230;
+  --color-night-2: #474f70;
+  --color-night-3: #7a819c;
+
+  --color-violet: #6c63ff;
+  --color-violet-2: #8b7cff;
+  --color-electric: #4f8cff;
+  --color-cyan: #55d6ff;
+
+  --font-sans: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+html {
+  background: var(--color-ink-950);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgb(108 99 255 / 0.45);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-violet-2);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* Hide the native cursor only when the custom cursor is active (desktop, fine pointer, motion allowed). */
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button {
+  cursor: none;
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-fg-3);
+  }
+
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    text-wrap: balance;
+  }
+
+  /* Soft grain so large dark areas don't band. */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Card with a soft light that follows the pointer (set by <Card>). */
+  .spot {
+    background-image: radial-gradient(420px circle at var(--mx, 50%) var(--my, -20%), rgb(139 124 255 / 0.16), transparent 60%);
+  }
+
+  /* Light section sheet: rounded top edge that slides over the dark section above. */
+  .sheet {
+    position: relative;
+    z-index: 1;
+    background:
+      radial-gradient(rgb(13 18 48 / 0.07) 1px, transparent 1.2px) 0 0 / 22px 22px,
+      radial-gradient(70% 50% at 100% 0%, rgb(108 99 255 / 0.1), transparent 70%),
+      var(--color-paper);
+    color: var(--color-night);
+    border-radius: 40px 40px 0 0;
+    margin-top: -40px;
+  }
+
+  .sheet-dark {
+    position: relative;
+    z-index: 1;
+    background: radial-gradient(80% 60% at 80% 0%, rgb(108 99 255 / 0.18), transparent 70%), var(--color-ink-950);
+    color: var(--color-fg);
+    border-radius: 40px 40px 0 0;
+    margin-top: -40px;
+  }
+
+  .eyebrow-dark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-night-3);
+  }
+
+  .placeholder-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--color-cyan);
+    border: 1px dashed rgb(85 214 255 / 0.4);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes drift {
+  0% { transform: translate3d(-8%, -4%, 0) scale(1); }
+  50% { transform: translate3d(6%, 5%, 0) scale(1.08); }
+  100% { transform: translate3d(-8%, -4%, 0) scale(1); }
+}
+
+@keyframes aurora-a {
+  0%, 100% { transform: translate3d(-10%, -6%, 0) scale(1); }
+  50% { transform: translate3d(12%, 8%, 0) scale(1.15); }
+}
+
+@keyframes aurora-b {
+  0%, 100% { transform: translate3d(8%, 10%, 0) scale(1.1); }
+  50% { transform: translate3d(-12%, -8%, 0) scale(0.95); }
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
